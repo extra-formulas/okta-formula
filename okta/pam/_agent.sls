@@ -18,7 +18,7 @@ okta-pam-config-file:
   file.managed:
     - name: {{ okta_pam.asa_config_dir }}/sftd.yaml
     - content: |
-      {{ okta_pam.agent_config|yaml(False)|indent(8) }}
+{{ okta_pam.agent_config|yaml(False)|indent(8) }}
     - makedirs: true
     - require:
       - test: okta-pam-install-completed
