@@ -1,0 +1,12 @@
+RedHat:
+  pam:
+    repo_name: oktapam-stable
+    repo_humanname: Okta PAM Stable - RHEL $releasever
+    repo_baseurl: https://dist.scaleft.com/repos/rpm/stable/rhel/$releasever/$basearch
+
+Debian:
+  pam:
+    name: 'deb [arch=amd64 signed-by=/usr/share/keyrings/scaleft-archive-keyring.gpg] http://pkg.scaleft.com/deb linux main'
+    comps: main
+    file: /etc/apt/sources.list.d/scaleft.list
+    key_url: https://dist.scaleft.com/pki/scaleft_deb_key.asc

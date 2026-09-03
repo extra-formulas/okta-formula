@@ -1,0 +1,6 @@
+pam:
+  agent_enrollment_dir: /var/lib/sftd
+  agent_package_name: scaleft-server-tools
+  agent_service_name: sftd
+  asa_config_dir: /etc/sft
+  repo_gpgkey: https://dist.scaleft.com/GPG-KEY-OktaPAM-2023
