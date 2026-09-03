@@ -10,7 +10,7 @@ okta-pam-config-file:
   file.managed:
     - name: {{ okta_pam.asa_config_dir }}/sftd.yaml
     - content: |
-      {{ okta_pam.agent_config|yaml }}
+{{ okta_pam.agent_config|yaml }}
     - makedirs: true
     - require_in:
       - test: okta-pam-pre-install-done
