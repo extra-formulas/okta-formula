@@ -22,7 +22,7 @@ okta-pam-config-file:
     - makedirs: true
     - require:
       - test: okta-pam-install-completed
-    - require_in:
+    - watch_in:
       - test: okta-pam-configuration-set
 {%- endif %}
 
