@@ -12,10 +12,15 @@ okta-pam-install-completed:
     - require:
       - test: okta-pam-pre-install-done
 
-okta-pam-related-services-running:
+okta-pam-configuration-set:
   test.nop:
     - require:
       - test: okta-pam-install-completed
+
+okta-pam-related-services-running:
+  test.nop:
+    - require:
+      - test: okta-pam-configuration-set
 
 okta-pam-related-services-configured:
   test.nop:

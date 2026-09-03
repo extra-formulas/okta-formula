@@ -5,17 +5,6 @@
 
 {% if okta_pam.use|to_bool -%}
 
-{% if okta_pam.agent_config is defined -%}
-okta-pam-config-file:
-  file.managed:
-    - name: {{ okta_pam.asa_config_dir }}/sftd.yaml
-    - content: |
-      {{ okta_pam.agent_config|yaml(False)|indent(6) }}
-    - makedirs: true
-    - require_in:
-      - test: okta-pam-pre-install-done
-{%- endif %}
-
 okta-pam-agent-installed:
   pkg.installed:
     - name: {{ okta_pam.agent_package_name }}
@@ -24,6 +13,17 @@ okta-pam-agent-installed:
     - require_in:
       - test: okta-pam-install-completed
 
+{% if okta_pam.agent_config is defined -%}
+okta-pam-config-file:
+  file.managed:
+    - name: {{ okta_pam.asa_config_dir }}/sftd.yaml
+    - content: |
+      {{ okta_pam.agent_config|yaml(False)|indent(6) }}
+    - makedirs: true
+    - require_in:
+      - test: okta-pam-configuration-set
+{%- endif %}
+
 okta-pam-agent-running:
   service.running:
     - name: {{ okta_pam.agent_service_name }}
@@ -31,7 +31,7 @@ okta-pam-agent-running:
     - require_in:
       - test: okta-pam-related-services-running
     - watch:
-      - test: okta-pam-related-services-configured
+      - test: okta-pam-configuration-set
 
 okta-pam-host-enrolled:
   file.managed:
