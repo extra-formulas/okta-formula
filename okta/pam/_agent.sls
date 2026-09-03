@@ -39,6 +39,7 @@ okta-pam-host-enrolled:
   file.managed:
     - name: {{ okta_pam.agent_enrollment_dir }}/enrollment.token
     - contents: {{ okta_pam.agent_enrollment_token }}
+    - show_changes: False
     - onlyif:
       - test ! -f {{ okta_pam.agent_enrollment_dir }}/device.token
     - require:
