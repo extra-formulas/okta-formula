@@ -60,7 +60,7 @@ okta-pam-repo-cleaned:
 {%- endif %}
 
 {% if includes|length > 0 -%}
-include: {{ includes|json }}
+{{ {'include': includes}|yaml(False) }}
 {%- endif %}
 
 {%- else -%}
