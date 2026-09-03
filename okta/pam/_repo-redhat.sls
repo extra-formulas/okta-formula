@@ -27,6 +27,8 @@ okta-pam-repo-installed:
 okta-pam-repo-removed:
   pkgrepo.absent:
     - name: {{ okta_pam.repo_name }}
+    - require:
+      - test: okta-pam-configuration-removed
     - require_in:
       - test: okta-pam-repo-cleaned
 

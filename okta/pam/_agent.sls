@@ -20,6 +20,8 @@ okta-pam-config-file:
     - content: |
       {{ okta_pam.agent_config|yaml(False)|indent(6) }}
     - makedirs: true
+    - require:
+      - test: okta-pam-install-completed
     - require_in:
       - test: okta-pam-configuration-set
 {%- endif %}
@@ -28,10 +30,10 @@ okta-pam-agent-running:
   service.running:
     - name: {{ okta_pam.agent_service_name }}
     - enable: True
-    - require_in:
-      - test: okta-pam-related-services-running
     - watch:
       - test: okta-pam-configuration-set
+    - require_in:
+      - test: okta-pam-related-services-running
 
 okta-pam-host-enrolled:
   file.managed:
@@ -39,6 +41,8 @@ okta-pam-host-enrolled:
     - contents: {{ okta_pam.agent_enrollment_token }}
     - onlyif:
       - test ! -f {{ okta_pam.agent_enrollment_dir }}/device.token
+    - require:
+      - test: okta-pam-related-services-running
     - require_in:
       - test: okta-pam-related-services-configured
 
@@ -54,18 +58,24 @@ okta-pam-agent-stopped:
 okta-pam-agent-removed:
   pkg.removed:
     - name: {{ okta_pam.agent_package_name }}
+    - require:
+      - test: okta-pam-related-services-stopped
     - require_in:
       - test: okta-pam-uninstall-completed
 
 okta-pam-agent-unenrolled:
   file.absent:
     - name: {{ okta_pam.agent_enrollment_dir }}
+    - require:
+      - test: okta-pam-uninstall-completed
     - require_in:
       - test: okta-pam-configuration-removed
 
 okta-pam-config-deleted:
   file.absent:
     - name: {{ okta_pam.asa_config_dir }}
+    - require:
+      - test: okta-pam-uninstall-completed
     - require_in:
       - test: okta-pam-configuration-removed
 
