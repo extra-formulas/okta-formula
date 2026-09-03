@@ -15,10 +15,10 @@ okta-pam-agent-installed:
 
 {% if okta_pam.agent_config is defined -%}
 okta-pam-config-file:
-  file.managed:
+  file.serialize:
     - name: {{ okta_pam.asa_config_dir }}/sftd.yaml
-    - content: |
-{{ okta_pam.agent_config|yaml(False)|indent(8) }}
+    - dataset: {{ okta_pam.agent_config|json }}
+    - serializer: yaml
     - makedirs: true
     - require:
       - test: okta-pam-install-completed
