@@ -5,18 +5,15 @@
 
 {% if okta_pam.use|to_bool -%}
 
-{% if (okta_pam.agent_configs is defined) and (grains['host']|default('')|length > 0) -%}
-{%- set host_name = grains['host'].split('.')[0] %}
-{% if host_name in okta_pam.agent_configs -%}
+{% if okta_pam.agent_config is defined -%}
 okta-pam-config-file:
   file.managed:
     - name: {{ okta_pam.asa_config_dir }}/sftd.yaml
     - content: |
-      {{ okta_pam.agent_configs[host_name]|default({})|yaml }}
+      {{ okta_pam.agent_config|yaml }}
     - makedirs: true
     - require_in:
       - test: okta-pam-pre-install-done
-{%- endif %}
 {%- endif %}
 
 okta-pam-agent-installed:
