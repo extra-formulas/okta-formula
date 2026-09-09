@@ -35,7 +35,7 @@ okta-pam-gateway-running:
     - require_in:
       - test: okta-pam-related-services-running
 
-okta-pam-host-enrolled:
+okta-pam-gateway-enrolled:
   file.managed:
     - name: {{ okta_pam.gateway_enrollment_dir }}/setup.token
     - contents: {{ okta_pam.gateway_enrollment_token }}
@@ -72,7 +72,7 @@ okta-pam-gateway-unenrolled:
     - require_in:
       - test: okta-pam-configuration-removed
 
-okta-pam-config-deleted:
+okta-pam-config-deleted-by-gateway:
   file.absent:
     - name: {{ okta_pam.config_dir }}
     - require:

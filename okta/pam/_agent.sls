@@ -35,7 +35,7 @@ okta-pam-agent-running:
     - require_in:
       - test: okta-pam-related-services-running
 
-okta-pam-host-enrolled:
+okta-pam-agent-enrolled:
   file.managed:
     - name: {{ okta_pam.agent_enrollment_dir }}/enrollment.token
     - contents: {{ okta_pam.agent_enrollment_token }}
@@ -72,7 +72,7 @@ okta-pam-agent-unenrolled:
     - require_in:
       - test: okta-pam-configuration-removed
 
-okta-pam-config-deleted:
+okta-pam-config-deleted-by-agent:
   file.absent:
     - name: {{ okta_pam.config_dir }}
     - require:
