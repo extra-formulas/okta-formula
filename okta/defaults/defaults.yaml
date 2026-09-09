@@ -2,5 +2,8 @@ pam:
   agent_enrollment_dir: /var/lib/sftd
   agent_package_name: scaleft-server-tools
   agent_service_name: sftd
-  asa_config_dir: /etc/sft
+  config_dir: /etc/sft
+  gateway_enrollment_dir: /var/lib/sft-gatewayd
+  gateway_package_name: scaleft-gateway
+  gateway_service_name: sft-gatewayd
   repo_gpgkey: https://dist.scaleft.com/GPG-KEY-OktaPAM-2023

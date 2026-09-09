@@ -5,19 +5,19 @@
 
 {% if okta_pam.use|to_bool -%}
 
-okta-pam-agent-installed:
+okta-pam-gateway-installed:
   pkg.installed:
-    - name: {{ okta_pam.agent_package_name }}
+    - name: {{ okta_pam.gateway_package_name }}
     - require:
       - test: okta-pam-pre-install-done
     - require_in:
       - test: okta-pam-install-completed
 
-{% if okta_pam.agent_config is defined -%}
-okta-pam-agent-config-file:
+{% if okta_pam.gateway_config is defined -%}
+okta-pam-gateway-config-file:
   file.serialize:
-    - name: {{ okta_pam.config_dir }}/sftd.yaml
-    - dataset: {{ okta_pam.agent_config|json }}
+    - name: {{ okta_pam.config_dir }}/sft-gatewayd.yaml
+    - dataset: {{ okta_pam.gateway_config|json }}
     - serializer: yaml
     - makedirs: true
     - require:
@@ -26,9 +26,9 @@ okta-pam-agent-config-file:
       - test: okta-pam-configuration-set
 {%- endif %}
 
-okta-pam-agent-running:
+okta-pam-gateway-running:
   service.running:
-    - name: {{ okta_pam.agent_service_name }}
+    - name: {{ okta_pam.gateway_service_name }}
     - enable: True
     - watch:
       - test: okta-pam-configuration-set
@@ -37,11 +37,11 @@ okta-pam-agent-running:
 
 okta-pam-host-enrolled:
   file.managed:
-    - name: {{ okta_pam.agent_enrollment_dir }}/enrollment.token
-    - contents: {{ okta_pam.agent_enrollment_token }}
+    - name: {{ okta_pam.gateway_enrollment_dir }}/enrollment.token
+    - contents: {{ okta_pam.gateway_enrollment_token }}
     - show_changes: False
     - onlyif:
-      - test ! -f {{ okta_pam.agent_enrollment_dir }}/device.token
+      - test ! -f {{ okta_pam.gateway_enrollment_dir }}/device.token
     - require:
       - test: okta-pam-related-services-running
     - require_in:
@@ -49,24 +49,24 @@ okta-pam-host-enrolled:
 
 {%- else -%}
 
-okta-pam-agent-stopped:
+okta-pam-gateway-stopped:
   service.dead:
-    - name: {{ okta_pam.agent_service_name }}
+    - name: {{ okta_pam.gateway_service_name }}
     - enable: False
     - require_in:
       - test: okta-pam-related-services-stopped
 
-okta-pam-agent-removed:
+okta-pam-gateway-removed:
   pkg.removed:
-    - name: {{ okta_pam.agent_package_name }}
+    - name: {{ okta_pam.gateway_package_name }}
     - require:
       - test: okta-pam-related-services-stopped
     - require_in:
       - test: okta-pam-uninstall-completed
 
-okta-pam-agent-unenrolled:
+okta-pam-gateway-unenrolled:
   file.absent:
-    - name: {{ okta_pam.agent_enrollment_dir }}
+    - name: {{ okta_pam.gateway_enrollment_dir }}
     - require:
       - test: okta-pam-uninstall-completed
     - require_in:

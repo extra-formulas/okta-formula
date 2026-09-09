@@ -57,6 +57,9 @@ okta-pam-repo-cleaned:
 {%- elif os_family == 'debian' -%}
 {%- do includes.append('._repo-debian') %}
 {%- endif %}
+{% if okta_pam.gateway_enrollment_token|default('')|length > 0 -%}
+{%- do includes.append('._gateway') %}
+{%- endif %}
 {% if okta_pam.agent_enrollment_token|default('')|length > 0 -%}
 {%- do includes.append('._agent') %}
 {%- endif %}
