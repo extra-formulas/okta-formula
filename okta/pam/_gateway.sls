@@ -37,7 +37,7 @@ okta-pam-gateway-running:
 
 okta-pam-host-enrolled:
   file.managed:
-    - name: {{ okta_pam.gateway_enrollment_dir }}/enrollment.token
+    - name: {{ okta_pam.gateway_enrollment_dir }}/setup.token
     - contents: {{ okta_pam.gateway_enrollment_token }}
     - show_changes: False
     - onlyif:
